@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  h1= title
+  button(type="button", id="loginBtn") Sign In
+  p OneNote Create Examples:
+  form(id="createExamples" name="createExamples", method="post")
+    button(type="submit", name="submit", value="text" disabled) Create OneNote Page with Text
+    br
+    button(type="submit", name="submit", value="textimage" disabled) Create OneNote Page with Text and Images
+    br
+    button(type="submit", name="submit", value="html" disabled) Create OneNote Page with a Screenshot of HTML
+    br
+    button(type="submit", name="submit", value="url" disabled) Create OneNote Page with a Screenshot of a URL
+    br
+    button(type="submit", name="submit", value="file" disabled) Create OneNote Page with an Embedded File
+    br
+  script.
+    window.authUrl = '!{authUrl}';
+  script(src="/javascripts/index.js")

@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1= title
+  a(href='/') Go back
+  br
+  p
+    a(href=resourceUrl, target='_onenote') Access submitted resource
+  pre #{body}
