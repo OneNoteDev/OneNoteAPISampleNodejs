@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="http://i3.msdn.microsoft.com/Combined.css?resources=0:Topic,0:CodeSnippet,0:ProgrammingSelector,0:ExpandableCollapsibleArea,1:CommunityContent,0:TopicNotInScope,0:FeedViewerBasic,0:ImageSprite,2:header,2:SearchBox,2:ImageSprite,0:Breadcrumbs,1:Toc,1:NavigationResize,3:FeedbackCounter,3:Feedback,1:LibraryMemberFilter,2:footer,4:Metro;/Areas/Epx/Content/Css:0,/Areas/Library/Content:1,/Areas/Epx/Themes/Metro/Content:2,/Areas/Epx/Shared/Content:3,/Areas/Library/Themes/Metro/Content:4&amp;amp;hashKey=6C88459BBE815E4612422961505E03CE">
+</head>
+
+<body>
+    <span class="LW_CollapsibleArea_Title">Capture web page snapshots in a Node.js app</span>
+
+    <p>The following code snippet builds a simple multi-part POST request with some HTML in a "Presentation" block.
+    In that HTML is an &lt;img&gt; tag that shows how to specify an internet URL to the page rendering engine.</p>
+
+    <div class="codeSnippetContainer">
+        <div class="codeSnippetContainerTabs">
+            <div class="codeSnippetContainerTabSingle" dir="ltr">
+                <a>Javascript</a>
+            </div>
+        </div>
+
+        <div class="codeSnippetContainerCodeContainer">
+            <div class="codeSnippetContainerCode" dir="ltr">
+                <div style="color:Black;">
+                    <pre>
+/**
+ * Create OneNote Page with a Screenshot of a URL
+ *
+ * @param {string} accessToken The access token
+ * @param {createPageCallback} callback The callback with response data
+ */
+this.createPageWithScreenshotFromUrl = function (accessToken, callback) {
+    var htmlPayload =
+        "&lt;!DOCTYPE html&gt;" +
+        "&lt;html&gt;" +
+        "&lt;head&gt;" +
+        "    &lt;title&gt;A page created with a URL snapshot on it (Node.js Sample)&lt;/title&gt;" +
+        "    &lt;meta name=\"created\" value=\"" + dateTimeNowISO() + "\"/&gt;" +
+        "&lt;/head&gt;" +
+        "&lt;body&gt;" +
+        "    &lt;img data-render-src=\"http://www.onenote.com\" alt=\"An important web page\" /&gt;" +
+        "    Source URL: &lt;a href=\"http://www.onenote.com\"&gt;http://www.onenote.com&lt;/a&gt;" +
+        "&lt;/body&gt;" +
+        "&lt;/html&gt;";
+
+    createPage(accessToken, htmlPayload, callback, false);
+};
+/**
+ * @callback createPageCallback
+ * @param {object} Error
+ * @param {object} HTTP Response
+ * @param {string} Response body
+ */
+
+var oneNotePagesApiUrl = 'https://www.onenote.com/api/v1.0/pages';
+
+/* Pages API request builder & sender */
+function createPage(accessToken, payload, callback, multipart) {
+    var options = {
+        url: oneNotePagesApiUrl,
+        headers: {'Authorization': 'Bearer ' + accessToken}
+    };
+    // Build simple request
+    if (!multipart) {
+        options.headers['Content-Type'] = 'text/html';
+        options.body = payload;
+    }
+    var r = request.post(options, callback);
+    // Build multi-part request
+    if (multipart) {
+        var CRLF = '\r\n';
+        var form = r.form(); // FormData instance
+        _.each(payload, function (partData, partId) {
+            form.append(partId, partData.body, {
+                // Use custom multi-part header
+                header: CRLF +
+                    '--' + form.getBoundary() + CRLF +
+                    'Content-Disposition: form-data; name=\"' + partId + '\"' + CRLF +
+                    'Content-Type: ' + partData.contentType + CRLF + CRLF
+            });
+        });
+    }
+}
+
+function dateTimeNowISO() {
+    return new Date().toISOString();
+}
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

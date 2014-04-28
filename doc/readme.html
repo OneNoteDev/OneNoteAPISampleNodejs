@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+
+<html>
+<head>
+    <title></title>
+</head>
+
+<body>
+    <h2><a name="user-content-onenote-api-nodejs-sample-readme" class="anchor" href="#onenote-api-nodejs-sample-readme" id="user-content-onenote-nodejs-sample-readme"></a>OneNote API Node.js Sample README</h2>
+    <p>Created by Microsoft Corporation, 2014. Provided As-is without warranty. Trademarks mentioned here are the property of their owners.</p>
+    <h3><a name="user-content-api-functionality-demonstrated-in-this-sample" class="anchor" href="#api-functionality-demonstrated-in-this-sample" id="user-content-api-functionality-demonstrated-in-this-sample"></a>API functionality demonstrated in this sample</h3>
+    <p>The following aspects of the API are covered in this sample. You can find additional documentation at the links below.</p>
+    <ul>
+        <li><a href="login-sample.html">Authenticate the user in an Node.js app </a></li>
+        <li><a href="post-html-sample.html">POST simple HTML to a new OneNote QuickNotes page</a></li>
+        <li><a href="post-multi-part-with-image.html">POST multi-part message with image data included in the request</a></li>
+        <li><a href="post-with-url-as-image.html">POST page with a URL rendered as an image</a></li>
+        <li><a href="post-pdf-attachment.html">POST page with a PDF file attachment</a></li>
+    </ul>
+
+    <h3><a name="user-content-prerequisites" class="anchor" href="#prerequisites" id="user-content-prerequisites"></a>Prerequisites</h3>
+
+    <p><strong>Tools and Libraries</strong> you will need to download, install, and configure for your development environment.</p>
+    <ul>
+        <li>
+            <a href="http://nodejs.org/download">Node.js</a>
+        </li>
+        <li>
+            <a href="http://expressjs.com">Express</a>
+        </li>
+    </ul>
+
+    <p><strong>Accounts</strong></p>
+
+    <ul>
+        <li>As the developer, you'll need to <a href="http://msdn.microsoft.com/EN-US/library/office/dn575426.aspx">have a Microsoft account and get a client ID string</a> so your app can authenticate with the Microsoft Live connect SDK.</li>
+    </ul>
+
+    <h3><a name="user-content-using-the-sample" class="anchor" href="#using-the-sample" id="user-content-using-the-sample"></a>Using the sample</h3>
+
+    <p>After you've setup your development tools, and checked the prerequisites listed above,....</p>
+
+    <ol>
+        <li>Open a terminal and change directory to the project's directory.</li>
+        <li>Setup project dependencies with the command: <code>npm install</code></li>
+        <li>Edit the config.js file to add in your Live Connect SDK information: Client ID, secret, redirect callback</li>
+        <li>Run the app with the command: <code>npm start</code></li>
+        <li>Open a browser and navigate to the app running by default on port 3000.</li>
+        <li>Authenticate in the running app, using your Microsoft account.</li>
+        <li>Allow the app to create new pages in OneNote.</li>
+    </ol>
+
+</body>
+</html>

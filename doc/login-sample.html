@@ -1,0 +1,162 @@
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="http://i3.msdn.microsoft.com/Combined.css?resources=0:Topic,0:CodeSnippet,0:ProgrammingSelector,0:ExpandableCollapsibleArea,1:CommunityContent,0:TopicNotInScope,0:FeedViewerBasic,0:ImageSprite,2:header,2:SearchBox,2:ImageSprite,0:Breadcrumbs,1:Toc,1:NavigationResize,3:FeedbackCounter,3:Feedback,1:LibraryMemberFilter,2:footer,4:Metro;/Areas/Epx/Content/Css:0,/Areas/Library/Content:1,/Areas/Epx/Themes/Metro/Content:2,/Areas/Epx/Shared/Content:3,/Areas/Library/Themes/Metro/Content:4&amp;amp;hashKey=6C88459BBE815E4612422961505E03CE">
+</head>
+
+<body>
+    <h2><a id="nodejs"></a><a id="NODE_JS"></a>Authenticate the user with Node.js</h2>
+
+    <p>One of the ways to sign a user in with Node.js is to have a route handle the Live Connect Authentication callback.
+       The route controller would take the authorization code supplied by the callback and request an access token with a REST client.
+       The access token is sent back to the client in a cookie.
+    </p>
+
+    <p>The REST client:</p>
+    <div class="codeSnippetContainer" >
+        <div class="codeSnippetContainerTabs">
+            <div class="codeSnippetContainerTabSingle" dir="ltr">
+                <a>Javascript</a>
+            </div>
+        </div>
+
+        <div class="codeSnippetContainerCodeContainer">
+            <div class="codeSnippetContainerCode" dir="ltr">
+                <div style="color:Black;">
+                    <pre>
+var oauthAuthorizeUrl = 'https://login.live.com/oauth20_authorize.srf',
+    oauthTokenUrl = 'https://login.live.com/oauth20_token.srf',
+    clientId = config.clientId,
+    clientSecret = config.clientSecret,
+    redirectUrl = config.redirectUrl;
+
+// Helper function to create an encoded url query string from an object
+function toQueryString(obj) {
+    var str = [];
+    for (var p in obj)
+        if (obj.hasOwnProperty(p)) {
+            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        }
+    return str.join("&");
+}
+
+/**
+ * Obtain a Live Connect authorization endpoint URL based on configuration.
+ * @returns {string} The authorization endpoint URL
+ */
+this.getAuthUrl = function () {
+    var scopes = ['wl.signin', 'wl.basic', 'wl.offline_access', 'office.onenote_create'];
+    var query = toQueryString({
+        'client_id': clientId,
+        'scope': scopes.join(' '),
+        'redirect_uri': redirectUrl,
+        'display': 'page',
+        'locale': 'en',
+        'response_type': 'code'
+    });
+    return oauthAuthorizeUrl + "?" + query;
+};
+
+/* Live Connect API request sender */
+function requestAccessToken(data, callback) {
+    request.post({url: oauthTokenUrl,
+            form: _.extend({
+                'client_id': clientId,
+                'client_secret': clientSecret,
+                'redirect_uri': redirectUrl
+            }, data)},
+        function (error, response, body) {
+            if (error) {
+                callback({});
+            } else {
+                callback(JSON.parse(body));
+            }
+        });
+}
+
+/**
+ * @callback accessTokenCallback
+ * @param {object} Response data parsed from JSON API result
+ */
+
+/**
+ * Request an access token by supplying an authorization code.
+ * @param {string} authCode The authorization code
+ * @param {accessTokenCallback} callback The callback with response data
+ */
+this.requestAccessTokenByAuthCode = function (authCode, callback) {
+    requestAccessToken({'code': authCode, 'grant_type': 'authorization_code'}, callback);
+};
+
+/**
+ * Request an access token by supplying a refresh token.
+ * @param {string} refreshToken The refresh token
+ * @param {accessTokenCallback} callback The callback with response data
+ */
+this.requestAccessTokenByRefreshToken = function(refreshToken, callback) {
+    requestAccessToken({'refresh_token': refreshToken, 'grant_type': 'refresh_token'}, callback);
+};
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p>The callback route controller:<br>
+       (The <code>liveConnect</code> variable is an instance of the REST client snippet above)</p>
+    <div class="codeSnippetContainer" >
+        <div class="codeSnippetContainerTabs">
+            <div class="codeSnippetContainerTabSingle" dir="ltr">
+                <a>Javascript</a>
+            </div>
+        </div>
+
+        <div class="codeSnippetContainerCodeContainer">
+            <div class="codeSnippetContainerCode" dir="ltr">
+                <div style="color:Black;">
+                    <pre>
+/* GET Live Connect Auth callback. */
+router.get('/', function (req, res) {
+    // Get the auth code from the callback url query parameters
+    var authCode = req.query['code'];
+
+    if (authCode) {
+        // Request an access token from the auth code
+        liveConnect.requestAccessTokenByAuthCode(authCode,
+            function (responseData) {
+                var accessToken = responseData['access_token'],
+                    refreshToken = responseData['refresh_token'],
+                    expiresIn = responseData['expires_in'];
+                if (accessToken && refreshToken && expiresIn) {
+                    // Save the access token on a session. Using cookies in this case:
+                    res.cookie('access_token', accessToken, { maxAge: expiresIn * 1000});
+                    res.cookie('refresh_token', refreshToken);
+
+                    res.render('callback');
+                } else {
+                    // Handle an authentication error response
+                    res.render('error', {
+                        message: 'Invalid Live Connect Response',
+                        error: {details: JSON.stringify(responseData, null, 2)}
+                    });
+                }
+            });
+    } else {
+        // Handle an error passed from the callback query params
+        var authError = req.query['error'],
+            authErrorDescription = req.query['error_description'];
+        res.render('error', {
+            message: 'Live Connect Auth Error',
+            error: {status: authError, details: authErrorDescription}
+        });
+    }
+
+});
+                    </pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
