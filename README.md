@@ -8,7 +8,7 @@ Created by Microsoft Corporation, 2014. Provided As-is without warranty. Tradema
 The following aspects of the API are covered in this sample. You can 
 find additional documentation at the links below.
 
-* [Log-in the user using the Live SDK](http://msdn.microsoft.com/EN-US/library/office/dn575435.aspx)
+* [Log-in the user](http://msdn.microsoft.com/EN-US/library/office/dn575435.aspx)
 * [POST simple HTML to a new OneNote QuickNotes page](http://msdn.microsoft.com/EN-US/library/office/dn575428.aspx)
 * [POST multi-part message with image data included in the request](http://msdn.microsoft.com/EN-US/library/office/dn575432.aspx)
 * [POST page with a URL rendered as an image](http://msdn.microsoft.com/EN-US/library/office/dn575431.aspx)
