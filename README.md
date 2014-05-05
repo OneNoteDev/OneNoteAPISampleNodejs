@@ -39,9 +39,8 @@ After you've setup your web server described above,....
 1. Download the repo as a ZIP file to your local computer, and extract the files. Or, clone the repository into a local copy of Git. 
 2. Go to the [Microsoft app registration page](https://account.live.com/developers/applications/index).
 3. On the API Settings page, set Mobile or desktop setting to No.
-4. Set the Redirect URI to the domain name of your web site, as in the following example.
-![](images/MSAScreenShot.png)
-
+4. Set the Redirect URI to the domain name of your web site, as in the following example. The root domain name must be unique, so if you use one domain for testing and another for production, you'll need to register separate client ids and secrets for each domain.
+![](images/OneNoteMSAScreen.png)
 5. On the App Setting page, copy the client ID and secret into the config.js file. 
 6. Open a command prompt and go to the root directory of the project. 
 7. Setup project dependencies with the `npm install` command.
