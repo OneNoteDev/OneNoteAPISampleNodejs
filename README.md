@@ -23,7 +23,7 @@ find additional documentation at the links below.
 * [Node.js](http://nodejs.org/download)
 * [Express framework for Node.js](http://expressjs.com)
 * You have a normal URL with hostname (not just an IP address) to use for the Redirect URL. If you run this from your own desktop, you'll need to modify your Hosts file (in C:\Windows\System32\drivers\etc for Windows machines and /private/etc for Macs) and map your local server IP address to a new domain name, as in the following example.
- ![](images/HostsFile.png)
+ ![Hosts File open in notepad](images/HostsFile.png)
 
 **Accounts**
 
@@ -40,7 +40,7 @@ After you've setup your web server described above,....
 2. Go to the [Microsoft app registration page](https://account.live.com/developers/applications/index).
 3. On the API Settings page, set Mobile or desktop setting to No.
 4. Set the Redirect URI to the domain name of your web site, as in the following example. The root domain name must be unique, so if you use one domain for testing and another for production, you'll need to register separate client ids and secrets for each domain.
-![](images/OneNoteMSAScreen.png)
+![API Settings page](images/OneNoteMSAScreen.png)
 5. On the App Setting page, copy the client ID and secret into the config.js file. 
 6. Open a command prompt and go to the root directory of the project. 
 7. Setup project dependencies with the `npm install` command.
