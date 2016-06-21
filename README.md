@@ -65,4 +65,4 @@ Also, see the [short overview/tutorial](http://go.microsoft.com/fwlink/?LinkID=3
 * [Debugging / Troubleshooting](http://msdn.microsoft.com/EN-US/library/office/dn575430.aspx)
 * [Getting Started](http://go.microsoft.com/fwlink/?LinkID=331026) with the OneNote API
 
-  
+  This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
